@@ -85,7 +85,7 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col md:flex-row gap-8 px-6 md:px-10 items-center justify-center relative">
-        <SnakeGame speed={DIFFICULTIES[difficulty].speed} />
+        <SnakeGame speed={DIFFICULTIES[difficulty].speed} difficulty={difficulty} />
         
         {/* Right side Visualizer text effect */}
         <section className="hidden xl:flex h-full flex-col justify-center items-end absolute right-10 top-0 bottom-0 pointer-events-none">

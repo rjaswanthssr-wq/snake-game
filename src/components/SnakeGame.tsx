@@ -9,6 +9,7 @@ interface Point {
 
 interface SnakeGameProps {
   speed: number;
+  difficulty: 'easy' | 'medium' | 'hard';
 }
 
 const INITIAL_SNAKE = [
@@ -18,7 +19,7 @@ const INITIAL_SNAKE = [
 ];
 const INITIAL_DIRECTION = { x: 0, y: -1 };
 
-export function SnakeGame({ speed }: SnakeGameProps) {
+export function SnakeGame({ speed, difficulty }: SnakeGameProps) {
   const [snake, setSnake] = useState<Point[]>(INITIAL_SNAKE);
   const [direction, setDirection] = useState<Point>(INITIAL_DIRECTION);
   const [food, setFood] = useState<Point>({ x: 5, y: 5 });
@@ -169,7 +170,10 @@ export function SnakeGame({ speed }: SnakeGameProps) {
 
       {/* Game Board */}
       <div className="relative aspect-square w-full">
-        <div className="absolute inset-0 bg-cyan-500/5 blur-3xl rounded-full pointer-events-none"></div>
+        {difficulty === 'easy' && <div className="absolute inset-0 bg-green-500/10 blur-3xl rounded-full pointer-events-none"></div>}
+        {difficulty === 'medium' && <div className="absolute inset-0 bg-cyan-500/5 blur-3xl rounded-full pointer-events-none"></div>}
+        {difficulty === 'hard' && <div className="absolute inset-0 bg-pink-500/10 blur-3xl rounded-full pointer-events-none"></div>}
+        
         <div className="relative w-full h-full bg-black rounded-3xl border-4 border-slate-900 flex items-center justify-center p-4">
           <div 
             className="grid gap-[2px] w-full h-full opacity-20 border border-white/5"
@@ -208,12 +212,24 @@ export function SnakeGame({ speed }: SnakeGameProps) {
               let cellClass = "w-full h-full"; // empty
 
               if (isHead) {
-                cellClass = "bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.6)] rounded-sm z-10 w-full h-full";
+                if (difficulty === 'easy') {
+                  cellClass = "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)] rounded-sm z-10 w-full h-full";
+                } else if (difficulty === 'hard') {
+                  cellClass = "bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.6)] rounded-sm z-10 w-full h-full";
+                } else {
+                  cellClass = "bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.6)] rounded-sm z-10 w-full h-full";
+                }
               } else if (isBody) {
                 // Calculate opacity for snake body fade effect
                 const bodyIndex = snake.findIndex(seg => seg.x === x && seg.y === y);
                 const opacity = Math.max(0.2, 0.8 - (bodyIndex * 0.05));
-                cellClass = "bg-cyan-400 rounded-sm w-full h-full shrink-0";
+                if (difficulty === 'easy') {
+                  cellClass = "bg-green-400 rounded-sm w-full h-full shrink-0";
+                } else if (difficulty === 'hard') {
+                  cellClass = "bg-pink-500 rounded-sm w-full h-full shrink-0";
+                } else {
+                  cellClass = "bg-cyan-400 rounded-sm w-full h-full shrink-0";
+                }
                 return <div key={`fg-${index}`} className={cellClass} style={{opacity}} />;
               } else if (isFood) {
                 cellClass = "bg-pink-500 rounded-full shadow-[0_0_20px_rgba(236,72,153,0.8)] animate-pulse w-full h-full scale-75";
@@ -237,7 +253,9 @@ export function SnakeGame({ speed }: SnakeGameProps) {
                   </div>
                 </>
               ) : (
-                <h2 className="text-4xl font-black text-cyan-400 mb-8 uppercase tracking-widest">
+                <h2 className={`text-4xl font-black mb-8 uppercase tracking-widest ${
+                  difficulty === 'easy' ? 'text-green-400' : difficulty === 'hard' ? 'text-pink-500' : 'text-cyan-400'
+                }`}>
                   Paused
                 </h2>
               )}
