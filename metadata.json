@@ -1,0 +1,6 @@
+{
+  "name": "Neon Snake & Synths",
+  "description": "A dark neon stylized Snake game accompanied by a built-in music player featuring AI-generated demo tracks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
